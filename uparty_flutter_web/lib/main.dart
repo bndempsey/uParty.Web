@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vertical_navigation_bar/vertical_navigation_bar.dart';
 
 void main() => runApp(MyApp());
 
@@ -61,6 +62,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final pageController = PageController(
+      initialPage: 0,
+      keepPage: true
+  );
+
+  final navItems = [
+    SideNavigationItem(icon: Icons.home, title: "Home"),
+    SideNavigationItem(icon: Icons.question_answer, title: "About"),
+    SideNavigationItem(icon: Icons.gavel, title: "Legal"),
+  ];
+  final initialTab = 0;
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -68,83 +81,40 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      // appBar: AppBar(
-      //   // Here we take the value from the MyHomePage object that was created by
-      //   // the App.build method, and use it to set our appbar title.
-      //   title: Text(widget.title),
-        
-      // ),
-      backgroundColor: Colors.black87,
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // Text(
-            //   'You have pushed the button this many times:',
-            // ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.display1,
-            // ),
-            
-            Container(
-              width: 250,
-              child: TextFormField(
-                textCapitalization: TextCapitalization.words,
-                cursorColor: Colors.grey,
-                style: TextStyle(
-                  color: Colors.grey
-                ),
-                decoration: InputDecoration(
-                  hintText: "Username",
-                  fillColor: Colors.white,
-                  hintStyle: TextStyle(color: Colors.grey)
-                  
-                ),
-              ),
+      body: Row(
+        children: <Widget>[
+          SideNavigation(
+            navItems: navItems,
+            itemSelected: (index){
+              pageController.animateToPage(
+                  index,
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.linear
+              );
+            },
+            initialIndex: 0,
+            actions: <Widget>[
+              //add some action button here
+            ],
+          ),
+          Expanded(
+            child: PageView.builder(
+              itemCount: 3,
+              controller: pageController,
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index){
+                return Container(
+                    color: Colors.black.withOpacity(0.8),
+                    child: Center(
+                      child: Text("Page " + index.toString()),
+                    )
+                );
+              },
             ),
-            Container(
-              width: 250,
-              child: TextFormField(
-                textCapitalization: TextCapitalization.words,
-                cursorColor: Colors.grey,
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
-                style: TextStyle(
-                  color: Colors.grey
-                ),
-                decoration: InputDecoration(
-                  hintText: "Password",
-                  fillColor: Colors.white,
-                  hintStyle: TextStyle(color: Colors.grey)
-                  
-                ),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
