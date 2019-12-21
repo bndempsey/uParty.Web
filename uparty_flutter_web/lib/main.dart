@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vertical_navigation_bar/vertical_navigation_bar.dart';
+import 'package:uparty_flutter_web/vertical_navigation_bar_clone.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -68,9 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
   );
 
   final navItems = [
-    SideNavigationItem(icon: Icons.home, title: "Home"),
-    SideNavigationItem(icon: Icons.question_answer, title: "About"),
-    SideNavigationItem(icon: Icons.gavel, title: "Legal"),
+    SideNavigationItem(iconData: Icons.home, title: "Home"),
+    SideNavigationItem(iconData: Icons.question_answer, title: "About"),
+    SideNavigationItem(iconData: Icons.gavel, title: "Legal"),
   ];
   final initialTab = 0;
 
@@ -106,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
               itemBuilder: (context, index){
                 return Container(
                     color: Colors.black.withOpacity(0.8),
+                    
                     child: Center(
                       child: Text("Page " + index.toString()),
                     )

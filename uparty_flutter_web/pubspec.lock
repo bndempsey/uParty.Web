@@ -184,13 +184,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
-  vertical_navigation_bar:
-    dependency: "direct main"
-    description:
-      name: vertical_navigation_bar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.2"
   xml:
     dependency: transitive
     description:
