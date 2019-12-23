@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uparty_flutter_web/vertical_navigation_bar_clone.dart';
-
 import 'responsive_builder_clone.dart';
+import 'shifting_tabbar_clone.dart';
 
 
 void main() => runApp(MyApp());
@@ -118,10 +118,37 @@ class _MyHomePageState extends State<MyHomePage> {
       }
 
       if (sizingInformation.deviceScreenType == DeviceScreenType.Mobile) {
-        return Scaffold(
-            body: Container(
-          color: Colors.blue,
-        ));
+        return DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            appBar: ShiftingTabBar(
+              color: Colors.black87,
+              tabs: [
+                ShiftingTab(
+                  icon: Icon(Icons.home),
+                  text: "Home",
+                ),
+                ShiftingTab(
+                  icon: Icon(Icons.question_answer),
+                  text: "About"
+                ),
+                ShiftingTab(
+                  icon: Icon(Icons.gavel),
+                  text: "Legal"
+                )
+              ],
+              
+            ),
+            body: TabBarView(
+              children: <Widget>[
+                Icon(Icons.home),
+                Icon(Icons.question_answer),
+                Icon(Icons.gavel)
+              ],
+            ),
+          ),
+          
+        );
       }
 
       return Container(color: Colors.purple);
