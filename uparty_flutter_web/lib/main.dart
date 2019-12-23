@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:uparty_flutter_web/vertical_navigation_bar_clone.dart';
 
+import 'responsive_builder_clone.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -21,8 +23,6 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
-        
-        
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -63,17 +63,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final pageController = PageController(
-      initialPage: 0,
-      keepPage: true
-  );
+    final pageController = PageController(initialPage: 0, keepPage: true);
 
-  final navItems = [
-    SideNavigationItem(iconData: Icons.home, title: "Home"),
-    SideNavigationItem(iconData: Icons.question_answer, title: "About"),
-    SideNavigationItem(iconData: Icons.gavel, title: "Legal"),
-  ];
-  final initialTab = 0;
+    final navItems = [
+      SideNavigationItem(iconData: Icons.home, title: "Home"),
+      SideNavigationItem(iconData: Icons.question_answer, title: "About"),
+      SideNavigationItem(iconData: Icons.gavel, title: "Legal"),
+    ];
+    final initialTab = 0;
 
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -81,42 +78,54 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      body: Row(
-        children: <Widget>[
-          SideNavigation(
-            navItems: navItems,
-            itemSelected: (index){
-              pageController.animateToPage(
-                  index,
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.linear
-              );
-            },
-            initialIndex: 0,
-            actions: <Widget>[
-              //add some action button here
+    return ResponsiveBuilder(builder: (context, sizingInformation) {
+      // Check the sizing information here and return your UI
+      if (sizingInformation.deviceScreenType == DeviceScreenType.Desktop ||
+          sizingInformation.deviceScreenType == DeviceScreenType.Tablet) {
+        return Scaffold(
+          body: Row(
+            children: <Widget>[
+              SideNavigation(
+                navItems: navItems,
+                itemSelected: (index) {
+                  pageController.animateToPage(index,
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.linear);
+                },
+                initialIndex: 0,
+                actions: <Widget>[
+                  //add some action button here
+                ],
+              ),
+              Expanded(
+                child: PageView.builder(
+                  itemCount: 3,
+                  controller: pageController,
+                  scrollDirection: Axis.vertical,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Container(
+                        color: Colors.black.withOpacity(0.8),
+                        child: Center(
+                          child: Text("Page " + index.toString()),
+                        ));
+                  },
+                ),
+              )
             ],
           ),
-          Expanded(
-            child: PageView.builder(
-              itemCount: 3,
-              controller: pageController,
-              scrollDirection: Axis.vertical,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index){
-                return Container(
-                    color: Colors.black.withOpacity(0.8),
-                    
-                    child: Center(
-                      child: Text("Page " + index.toString()),
-                    )
-                );
-              },
-            ),
-          )
-        ],
-      ),
-    );
+        );
+      }
+
+      if (sizingInformation.deviceScreenType == DeviceScreenType.Mobile) {
+        return Scaffold(
+            body: Container(
+          color: Colors.blue,
+        ));
+      }
+
+      return Container(color: Colors.purple);
+    });
+    
   }
 }
